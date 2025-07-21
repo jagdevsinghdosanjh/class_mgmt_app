@@ -45,6 +45,7 @@ Designed specifically for academic sessions (e.g., 2025–2026), this system pro
 class_mgmt_app/ ├── app.py ├── config.py ├── database.py ├── fee_calculator.py ├── student_utils.py ├── views/ │ ├── dashboard.py │ ├── fee_view.py │ └── communication.py ├── assets/ │ └── logo.png ├── data/ │ └── student_sample.csv
 
 ---
+![alt text](image.png)
 
 ## ⚙️ Technologies Used
 
