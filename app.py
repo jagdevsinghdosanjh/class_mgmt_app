@@ -3,7 +3,10 @@ import streamlit as st
 # Import view modules
 from views.dashboard import student_dashboard
 from views.fee_view import fee_view
-from views.admin_tools import patch_fee_ledgers_streamlit
+from views.admin_tools import (
+    patch_fee_ledgers_streamlit,
+    communication_controls
+)
 
 # Import login system
 from login import login_interface
@@ -20,7 +23,7 @@ login_interface()  # Admin login sidebar
 # App Header
 st.title("📘 Class Management System")
 
-# Navigation tabs based on login status
+# Navigation tabs
 tabs = ["Dashboard", "Fee Ledger"]
 if st.session_state["is_admin"]:
     tabs.append("Admin Tools")
@@ -30,20 +33,10 @@ selected_tab = st.sidebar.radio("Navigate", tabs)
 # Tab routing
 if selected_tab == "Dashboard":
     student_dashboard()
+
 elif selected_tab == "Fee Ledger":
     fee_view()
-elif selected_tab == "Admin Tools":
+
+elif selected_tab == "Admin Tools" and st.session_state["is_admin"]:
     patch_fee_ledgers_streamlit()
-
-
-
-
-
-# from login import login_interface
-
-# login_interface()  # Show sidebar login prompt
-
-# if st.session_state["is_admin"]:
-#     st.sidebar.markdown("✅ Admin access granted")
-#     # Show admin tools or exports here
-
+    communication_controls()
