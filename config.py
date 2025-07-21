@@ -1,1 +1,2 @@
+MONGO_URI = "mongodb+srv://<username>:<password>@cluster.mongodb.net/class_mgmt"
 
