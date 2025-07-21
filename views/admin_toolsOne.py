@@ -1,25 +1,21 @@
 import streamlit as st
-import pandas as pd
-import os
-from pymongo import MongoClient
-from config import MONGO_URI
 from communication import send_email_receipt, send_sms
-from fee_calculator import generate_fee_record
-
-SESSION_MONTHS = [
-    "April", "May", "June", "July", "August", "September",
-    "October", "November", "December", "January", "February", "March"
-]
+import os
 
 def patch_fee_ledgers_streamlit():
     st.subheader("🩺 Fix Fee Ledgers")
     if st.button("🔧 Run Ledger Patch"):
+        st.session_state["patch_done"] = False
+        from pymongo import MongoClient
+        from config import MONGO_URI
+        from fee_calculator import generate_fee_record, SESSION_MONTHS
+
         client = MongoClient(MONGO_URI)
         db = client["class_mgmt"]
         students = db["students"]
         fee_records = db["fee_records"]
-        updated = 0
 
+        updated = 0
         for student in students.find({}, {"_id": 0}):
             sid = student["Student ID"]
             fatherless = student.get("Fatherless", False)
@@ -36,34 +32,56 @@ def patch_fee_ledgers_streamlit():
             st.success(f"✅ Patched fee records for {updated} students.")
         else:
             st.info("All students already have complete fee ledgers.")
+        st.session_state["patch_done"] = True
+        
+        from pymongo import MongoClient
+from config import MONGO_URI
+from communication import send_email_receipt, send_sms
+import streamlit as st
+import os
 
 def communication_controls():
+    st.subheader("📬 Guardian Communication Center")
+
+    # MongoDB setup
     client = MongoClient(MONGO_URI)
     db = client["class_mgmt"]
     students = db["students"]
 
-    st.subheader("📬 Guardian Communication Center")
-
+    # Fetch student list
     student_map = {
         f"{s['Student ID']} – {s['Name']}": s
         for s in students.find({}, {"_id": 0, "Student ID": 1, "Name": 1, "Guardian Email": 1, "Mobile": 1})
     }
 
+    # Select student
     selected = st.selectbox("Select Student", list(student_map.keys()))
     student = student_map[selected]
     student_id = student["Student ID"]
     email = student.get("Guardian Email", "")
     phone = student.get("Mobile", "")
 
-    month = st.selectbox("Fee Month", SESSION_MONTHS)
+    # Select month
+    month = st.selectbox("Fee Month", [
+        "April", "May", "June", "July", "August", "September",
+        "October", "November", "December", "January", "February", "March"
+    ])
+
+    # Generate receipt path
     receipt_file = f"receipts/FEE2025-{student_id}-{month}.pdf"
 
+    # Message preview editors
     email_subject = f"Fee Receipt for {month}"
-    email_body = st.text_area("📧 Email Message Preview", f"Dear Guardian,\n\nAttached is your official fee receipt for {month}.\n\nBest regards,\nSchool Admin")
-    sms_message = st.text_area("📱 SMS Message Preview", f"Dear Guardian, fee for {month} has been received. Ref: FEE2025-{student_id}-{month}.")
+    email_body = st.text_area("Email Message Preview", f"Dear Guardian,\n\nAttached is your official fee receipt for {month}.\n\nBest regards,\nSchool Admin")
+
+    sms_message = st.text_area("SMS Message Preview", f"Dear Guardian, fee for {month} has been received. Ref: FEE2025-{student_id}-{month}.")
+
+    # Unified dispatch toggle
     send_both = st.checkbox("📦 Send Both Email and SMS")
 
+    # Buttons
     col1, col2 = st.columns(2)
+
     with col1:
         if st.button("📧 Send Email"):
             if os.path.exists(receipt_file):
@@ -77,12 +95,14 @@ def communication_controls():
             success = send_sms(phone, sms_message)
             st.success("✅ SMS sent." if success else "❌ SMS failed.")
 
+    # Unified dispatch
     if send_both and st.button("🚀 Send Both"):
         sms_success = send_sms(phone, sms_message)
         email_success = False
         if os.path.exists(receipt_file):
             email_success = send_email_receipt(email, email_subject, email_body, receipt_file)
 
+        # Results
         if email_success and sms_success:
             st.success("✅ Both Email and SMS sent successfully.")
         elif not email_success and not sms_success:
@@ -93,34 +113,30 @@ def communication_controls():
             else:
                 st.warning("✅ SMS sent, ❌ Email failed.")
 
-def import_students_csv():
-    st.subheader("📁 Import Students from CSV")
-    uploaded_file = st.file_uploader("Upload Student CSV", type=["csv"])
 
-    if uploaded_file:
-        df = pd.read_csv(uploaded_file)
-        st.write("🔍 Preview of Uploaded Data", df.head())
+# def communication_controls():
+#     st.subheader("📤 Send Communication")
 
-        if st.checkbox("⚠️ Clear existing MongoDB 'students' collection first"):
-            if st.button("🧹 Confirm Clear and Insert"):
-                client = MongoClient(MONGO_URI)
-                db = client["class_mgmt"]
-                students_collection = db["students"]
-                students_collection.delete_many({})
-                students_collection.insert_many(df.to_dict(orient="records"))
-                st.success(f"✅ Imported {len(df)} students after clearing existing data.")
-        elif st.button("📥 Insert Without Clearing"):
-            client = MongoClient(MONGO_URI)
-            db = client["class_mgmt"]
-            students_collection = db["students"]
-            students_collection.insert_many(df.to_dict(orient="records"))
-            st.success(f"✅ Imported {len(df)} students into MongoDB.")
+#     student_id = st.text_input("Student ID")
+#     month = st.selectbox("Fee Month", [
+#         "April", "May", "June", "July", "August", "September",
+#         "October", "November", "December", "January", "February", "March"
+#     ])
+#     email = st.text_input("Guardian's Email")
+#     phone = st.text_input("Mobile Number")
 
-def admin_tools_panel():
-    patch_fee_ledgers_streamlit()
+#     receipt_file = f"receipts/FEE2025-{student_id}-{month}.pdf"
+#     subject = f"Fee Receipt for {month}"
+#     body = f"Attached is your official fee receipt for {month}."
 
-    with st.expander("📬 Open Guardian Communication Center"):
-        communication_controls()
+#     if st.button("📧 Send Email Receipt"):
+#         if os.path.exists(receipt_file):
+#             sent = send_email_receipt(email, subject, body, receipt_file)
+#             st.success("✅ Email sent successfully." if sent else "❌ Failed to send email.")
+#         else:
+#             st.warning("Receipt file not found.")
 
-    with st.expander("📁 Import Student Records from CSV"):
-        import_students_csv()
+#     if st.button("📱 Send SMS Reminder"):
+#         msg = f"Dear Guardian, your child's fee for {month} has been received. Receipt ID: FEE2025-{student_id}-{month}."
+#         success = send_sms(phone, msg)
+#         st.success("✅ SMS sent." if success else "❌ SMS failed to send.")

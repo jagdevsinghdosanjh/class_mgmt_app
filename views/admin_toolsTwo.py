@@ -1,10 +1,8 @@
 import streamlit as st
-import pandas as pd
-import os
 from pymongo import MongoClient
 from config import MONGO_URI
 from communication import send_email_receipt, send_sms
-from fee_calculator import generate_fee_record
+import os
 
 SESSION_MONTHS = [
     "April", "May", "June", "July", "August", "September",
@@ -14,6 +12,7 @@ SESSION_MONTHS = [
 def patch_fee_ledgers_streamlit():
     st.subheader("🩺 Fix Fee Ledgers")
     if st.button("🔧 Run Ledger Patch"):
+        from fee_calculator import generate_fee_record
         client = MongoClient(MONGO_URI)
         db = client["class_mgmt"]
         students = db["students"]
@@ -44,6 +43,7 @@ def communication_controls():
 
     st.subheader("📬 Guardian Communication Center")
 
+    # Load and map student info
     student_map = {
         f"{s['Student ID']} – {s['Name']}": s
         for s in students.find({}, {"_id": 0, "Student ID": 1, "Name": 1, "Guardian Email": 1, "Mobile": 1})
@@ -93,34 +93,7 @@ def communication_controls():
             else:
                 st.warning("✅ SMS sent, ❌ Email failed.")
 
-def import_students_csv():
-    st.subheader("📁 Import Students from CSV")
-    uploaded_file = st.file_uploader("Upload Student CSV", type=["csv"])
-
-    if uploaded_file:
-        df = pd.read_csv(uploaded_file)
-        st.write("🔍 Preview of Uploaded Data", df.head())
-
-        if st.checkbox("⚠️ Clear existing MongoDB 'students' collection first"):
-            if st.button("🧹 Confirm Clear and Insert"):
-                client = MongoClient(MONGO_URI)
-                db = client["class_mgmt"]
-                students_collection = db["students"]
-                students_collection.delete_many({})
-                students_collection.insert_many(df.to_dict(orient="records"))
-                st.success(f"✅ Imported {len(df)} students after clearing existing data.")
-        elif st.button("📥 Insert Without Clearing"):
-            client = MongoClient(MONGO_URI)
-            db = client["class_mgmt"]
-            students_collection = db["students"]
-            students_collection.insert_many(df.to_dict(orient="records"))
-            st.success(f"✅ Imported {len(df)} students into MongoDB.")
-
 def admin_tools_panel():
     patch_fee_ledgers_streamlit()
-
     with st.expander("📬 Open Guardian Communication Center"):
         communication_controls()
-
-    with st.expander("📁 Import Student Records from CSV"):
-        import_students_csv()
