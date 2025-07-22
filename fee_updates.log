@@ -1,0 +1,11 @@
+INFO:twilio.http_client:-- BEGIN Twilio API Request --
+INFO:twilio.http_client:POST Request: https://api.twilio.com/2010-04-01/Accounts/AC89e2369884773b9ab95de90cc2814a1c/Messages.json
+INFO:twilio.http_client:Headers:
+INFO:twilio.http_client:Content-Type : application/x-www-form-urlencoded
+INFO:twilio.http_client:Accept : application/json
+INFO:twilio.http_client:User-Agent : twilio-python/9.6.5 (Windows AMD64) Python/3.12.7
+INFO:twilio.http_client:X-Twilio-Client : python-9.6.5
+INFO:twilio.http_client:Accept-Charset : utf-8
+INFO:twilio.http_client:-- END Twilio API Request --
+INFO:twilio.http_client:Response Status Code: 401
+INFO:twilio.http_client:Response Headers: {'Content-Type': 'application/json', 'Content-Length': '107', 'Connection': 'keep-alive', 'Date': 'Tue, 22 Jul 2025 19:57:24 GMT', 'X-Twilio-Error-Code': '20003', 'Twilio-Request-Id': 'RQe095b72b77fa09ebafbe2ce244c0fe01', 'Twilio-Request-Duration': '0.028', 'X-Home-Region': 'us1', 'X-API-Domain': 'api.twilio.com', 'Strict-Transport-Security': 'max-age=31536000', 'WWW-Authenticate': 'Basic realm="Twilio API"', 'X-Cache': 'Error from cloudfront', 'Via': '1.1 1bf9bb4ffb8bb50e9e8dab77ca8a313e.cloudfront.net (CloudFront)', 'X-Amz-Cf-Pop': 'DEL54-P3', 'X-Amz-Cf-Id': 'u1OlpQIUvCogFpVgDLWKJZlr5sEdyoCmWk6BbZLkqmmZKK6yDuTzMg==', 'X-Powered-By': 'AT-5000', 'X-Shenanigans': 'none', 'Vary': 'Origin'}
