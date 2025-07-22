@@ -22,3 +22,27 @@ def login_interface():
 # Initialize session state (can also be done in app.py once)
 if "is_admin" not in st.session_state:
     st.session_state["is_admin"] = False
+    st.session_state.setdefault("user_id",None)
+    st.session_state.setdefault("selected_student", None)
+
+#Init Session is a clean way to centralize your session state setup in Streamlit
+
+def init_session_keys():
+    default_state = {
+        "is_admin": False,
+        "user_id": None,
+        "selected_student": None,
+        "selected_month": None,
+        "student_map": {},             # optional: cache for performance
+        "email_status": None,         # can be used to show success/fail after sending
+        "sms_status": None,           # likewise
+        "session_initialized": True   # flag to prevent reinitialization
+    }
+
+    for key, value in default_state.items():
+        if key not in st.session_state:
+            st.session_state[key] = value
+    
+
+# Other Essentials
+    init_session_keys()
