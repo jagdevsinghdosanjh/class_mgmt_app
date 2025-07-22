@@ -12,7 +12,7 @@ st.sidebar.image("assets/logo.png", width=150)
 st.sidebar.title("Class Manager 🧮")
 login_interface()
 
-st.title("📘 Class Management System")
+st.title("📘 Class Management System - Jagdev Singh Computer Faculty")
 
 tabs = ["Dashboard", "Fee Ledger"]
 if st.session_state["is_admin"]:
