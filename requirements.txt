@@ -8,3 +8,4 @@ xlsxwriter==3.1.9         # Alternative Excel writer with styling
 python-dateutil==2.9.0    # Date parsing and validation
 python-dotenv==1.0.0
 twilio==9.6.5
+pymongo==4.13.2
