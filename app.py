@@ -1,5 +1,4 @@
 import streamlit as st
-
 from views.dashboard import student_dashboard
 from views.fee_view import fee_view
 from views.admin_tools import admin_tools_panel
