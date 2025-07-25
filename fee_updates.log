@@ -15,3 +15,26 @@ INFO:root:ANMOLPREET KAUR | Paid: May 2025
 INFO:root:ANMOLPREET KAUR | Paid: June 2025
 INFO:root:ANMOLPREET KAUR | Paid: July 2025
 INFO:root:ANMOLPREET KAUR | Paid: August 2025
+INFO:twilio.http_client:-- BEGIN Twilio API Request --
+INFO:twilio.http_client:POST Request: https://api.twilio.com/2010-04-01/Accounts/AC89e2369884773b9ab95de90cc2814a1c/Messages.json
+INFO:twilio.http_client:Headers:
+INFO:twilio.http_client:Content-Type : application/x-www-form-urlencoded
+INFO:twilio.http_client:Accept : application/json
+INFO:twilio.http_client:User-Agent : twilio-python/9.6.5 (Windows AMD64) Python/3.12.7
+INFO:twilio.http_client:X-Twilio-Client : python-9.6.5
+INFO:twilio.http_client:Accept-Charset : utf-8
+INFO:twilio.http_client:-- END Twilio API Request --
+INFO:twilio.http_client:Response Status Code: 401
+INFO:twilio.http_client:Response Headers: {'Content-Type': 'application/json', 'Content-Length': '107', 'Connection': 'keep-alive', 'Date': 'Fri, 25 Jul 2025 12:44:35 GMT', 'X-Twilio-Error-Code': '20003', 'Twilio-Request-Id': 'RQ362c138b22e5f82547cc8181155ec43c', 'Twilio-Request-Duration': '0.018', 'X-Home-Region': 'us1', 'X-API-Domain': 'api.twilio.com', 'Strict-Transport-Security': 'max-age=31536000', 'WWW-Authenticate': 'Basic realm="Twilio API"', 'X-Cache': 'Error from cloudfront', 'Via': '1.1 30d6f8dde4b5a27a899bbabad07e3ed2.cloudfront.net (CloudFront)', 'X-Amz-Cf-Pop': 'DEL54-P3', 'X-Amz-Cf-Id': 'N5Jfc4dGZ5QRHM3LdDjxJ8Gy7y-bOUKTzaq4BKodG54iE9dkxqvbbw==', 'X-Powered-By': 'AT-5000', 'X-Shenanigans': 'none', 'Vary': 'Origin'}
+INFO:root:JIVAN SINGH | Paid: April 2025
+INFO:root:JIVAN SINGH | Paid: May 2025
+INFO:root:JIVAN SINGH | Paid: June 2025
+INFO:root:JIVAN SINGH | Paid: July 2025
+INFO:root:JIVAN SINGH | Paid: August 2025
+INFO:root:JIVAN SINGH | Paid: September 2025
+INFO:root:JIVAN SINGH | Paid: October 2025
+INFO:root:JIVAN SINGH | Paid: November 2025
+INFO:root:JIVAN SINGH | Paid: December 2025
+INFO:root:JIVAN SINGH | Paid: January 2026
+INFO:root:JIVAN SINGH | Paid: February 2026
+INFO:root:JIVAN SINGH | Paid: March 2026
