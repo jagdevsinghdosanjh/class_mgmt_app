@@ -12,7 +12,7 @@ FEE_STRUCTURE = {
     "Other": 5
 }
 
-TOTAL_MONTHLY_FEE = sum(FEE_STRUCTURE.values())
+TOTAL_MONTHLY_FEE = sum(FEE_STRUCTURE.values()+200)
 
 # Academic session months
 SESSION_MONTHS = [
