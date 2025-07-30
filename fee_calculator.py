@@ -9,8 +9,7 @@ FEE_STRUCTURE = {
     "Amalgamated Fund": 20,
     "PTA Fund": 15,
     "Sports Fund": 15,
-    "Other": 5,
-    "Continuation Fee": 200
+    "Other": 5
 }
 
 TOTAL_MONTHLY_FEE = sum(FEE_STRUCTURE.values())
